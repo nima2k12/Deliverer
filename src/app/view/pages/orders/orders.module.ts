@@ -11,6 +11,7 @@ import { AccountInterceptor } from 'src/app/core/utility/account.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GeoLocationModalComponent } from './GeoLocationModal/GeoLocationModal.component';
 import { OrderDetailsModalComponent } from './order-details-modal/order-details-modal.component';
+import { PriceModule } from '../../../core/pipe/price.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { OrderDetailsModalComponent } from './order-details-modal/order-details-
     CommonModule,
     FormsModule,
     HttpClientModule,
-    OrdersPageRoutingModule
+    OrdersPageRoutingModule,
+    PriceModule
   ],
   providers: [
     {

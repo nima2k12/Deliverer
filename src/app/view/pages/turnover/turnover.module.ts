@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StockService } from '../../../data/service/deliverer/stock.service';
 import { HttpClientModule } from '@angular/common/http';
+import { PriceModule } from '../../../core/pipe/price.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PriceModule
   ],
   providers: [StockService]
 })
