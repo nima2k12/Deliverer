@@ -4,6 +4,9 @@
       <ion-menu-button color="primary"></ion-menu-button>
     </ion-buttons>
     <ion-title color="primary">Panel</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button color="primary" defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -96,12 +99,22 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-fab *ngIf="selected == '1'" vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab
+    *ngIf="selected == '1'"
+    vertical="bottom"
+    horizontal="center"
+    slot="fixed"
+  >
     <ion-fab-button (click)="takePicture()" color="primary">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-fab *ngIf="selected == '2'" vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab
+    *ngIf="selected == '2'"
+    vertical="bottom"
+    horizontal="center"
+    slot="fixed"
+  >
     <ion-fab-button (click)="takePictureRib()" color="primary">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>

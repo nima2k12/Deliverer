@@ -5,6 +5,8 @@ import { DelivererService } from '../../../../data/service/deliverer/deliverer.s
 import { SharedIonic } from '../../../../core/common/SharedIonic';
 import { IdImageModel } from '../../../../data/model/deliverer/IdImageModel';
 import { GAccount } from '../../../../core/common/GAccount';
+import { Urls } from '../../../../core/common/Urls';
+import { Router } from '@angular/router';
 const { Camera } = Plugins;
 
 @Component({
@@ -23,7 +25,8 @@ export class DelivererPanelComponent implements OnInit {
   constructor(
     public toastController: ToastController,
     public loadingController: LoadingController,
-    private delivererService: DelivererService) { }
+    private delivererService: DelivererService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -41,7 +44,7 @@ export class DelivererPanelComponent implements OnInit {
     this.imageShow = 'data:image/' + image.format + ';base64,' + image.base64String;
   }
 
-  segmentChanged(e){
+  segmentChanged(e) {
     // console.log(e.detail.value);
     this.selected = e.detail.value;
   }
@@ -127,5 +130,11 @@ export class DelivererPanelComponent implements OnInit {
         }
       );
     }
+  }
+
+  onNavigateHome() {
+
+    this.router.navigateByUrl(Urls.OrdersUrl);
+    return;
   }
 }

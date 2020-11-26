@@ -9,6 +9,7 @@ import { SharedIonic } from '../../../core/common/SharedIonic';
 import { Router } from '@angular/router';
 import { ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { Urls } from 'src/app/core/common/Urls';
+import { G } from '../../../core/common/G';
 
 @Component({
   selector: 'app-order-road-map',
@@ -18,10 +19,12 @@ import { Urls } from 'src/app/core/common/Urls';
 export class OrderRoadMapComponent implements OnInit, OnDestroy {
 
   order: IGeoOrderModel;
+  isAutoRoadTrack = true;
   geoWatchId: string;
   interval: any;
   map: any;
   delivererPosition = { lat: 0, lng: 0 };
+  lastDelivererPosition = { lat: 0, lng: 0 };
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsService = new google.maps.DirectionsService();
 
@@ -93,8 +96,25 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
           }
         );
 
-      // this.calcRoute();
+      if (this.isAutoRoadTrack) {
+
+        let distance =
+          G.getDistanceFromLatLonInKm
+            (this.lastDelivererPosition.lat, this.lastDelivererPosition.lng, this.delivererPosition.lat, this.delivererPosition.lng);
+
+        if (distance > 500) {
+          this.lastDelivererPosition = this.delivererPosition;
+          this.calcRoute();
+        }
+      }
+
     }, 3000);
+  }
+
+  ionViewWillLeave() {
+
+    this.clearWatch();
+    clearInterval(this.interval);
   }
 
   ngOnDestroy(): void {
@@ -109,6 +129,8 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
     try {
       this.delivererPosition.lat = +position.coords.latitude;
       this.delivererPosition.lng = +position.coords.longitude;
+      this.lastDelivererPosition.lat = +position.coords.latitude;
+      this.lastDelivererPosition.lng = +position.coords.longitude;
     } catch {
       console.log('GeoLocation Failed');
     }
@@ -162,7 +184,7 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: false,
-      center: POSITION
+      center: this.delivererPosition
     });
 
     this.directionsDisplay.setMap(this.map);
@@ -182,33 +204,73 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
   calcRoute() {
 
     let request = {
-      origin: this.delivererPosition,
+      origin: this.lastDelivererPosition,
       destination: { lat: +this.order.latitude, lng: +this.order.longitude },
       travelMode: google.maps.TravelMode.DRIVING
     };
     this.directionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsDisplay.setDirections(result);
+        setTimeout(() => {
+          this.map.setCenter(this.lastDelivererPosition);
+          this.map.setZoom(15);
+        }, 500);
       }
     });
   }
 
   onOrderDelivered() {
 
-    // SharedIonic.loading(this.loadingController);
+    let distance =
+      G.getDistanceFromLatLonInKm
+        (this.delivererPosition.lat, this.delivererPosition.lng, this.order.latitude, this.order.longitude);
 
-    // this.delivererService.SetDone(GAccount.OrderId).subscribe(
-    //   res => {
-    //     console.log(res);
-    //     SharedIonic.dismissLoading(this.loadingController);
-    //     SharedIonic.toast(this.toastController, 'Successfully Done');
-    //     this.router.navigateByUrl(Urls.HomeUrl);
-    //   },
-    //   err => {
-    //     console.log(err);
-    //     SharedIonic.dismissLoading(this.loadingController);
-    //     SharedIonic.toast(this.toastController, 'Failed');
-    //   }
-    // );
+    if (distance > 500) {
+      SharedIonic.toast(this.toastController, 'You Are Far From Order!');
+      return;
+    }
+
+    SharedIonic.loading(this.loadingController);
+
+    this.delivererService.SetDone(GAccount.OrderId).subscribe(
+      res => {
+        console.log('res');
+        console.log(res);
+        SharedIonic.dismissLoading(this.loadingController);
+        SharedIonic.toast(this.toastController, 'Successfully Done');
+        for (let index = 0; index < localStorage.length; index++) {
+
+          if (localStorage.key(index) === 'isDelivererTakeOrderState') {
+            localStorage.removeItem('isDelivererTakeOrderState');
+          } else if (localStorage.key(index) === 'orderId') {
+            localStorage.removeItem('orderId');
+          }
+        }
+        GAccount.DelivererTakeOrderState = false;
+        GAccount.OrderId = '0';
+        this.router.navigateByUrl(Urls.OrdersUrl);
+      },
+      err => {
+        console.log('err');
+        console.log(err);
+        SharedIonic.dismissLoading(this.loadingController);
+        if (err.error.text === 'Done !') {
+          SharedIonic.toast(this.toastController, 'Successfully Done');
+          for (let index = 0; index < localStorage.length; index++) {
+
+            if (localStorage.key(index) === 'isDelivererTakeOrderState') {
+              localStorage.removeItem('isDelivererTakeOrderState');
+            } else if (localStorage.key(index) === 'orderId') {
+              localStorage.removeItem('orderId');
+            }
+          }
+          GAccount.DelivererTakeOrderState = false;
+          GAccount.OrderId = '0';
+          this.router.navigateByUrl(Urls.OrdersUrl);
+        } else {
+          SharedIonic.toast(this.toastController, 'Failed');
+        }
+      }
+    );
   }
 }

@@ -30,7 +30,7 @@ export class OrdersPage implements OnInit, OnDestroy {
   geoWatchId: string;
   delivererPosition = { lat: 0, lng: 0 };
   interval: any;
-  isPageDestroyed = true;
+  isOnInitHappen = false;
 
   constructor(
     private delivererService: DelivererService,
@@ -46,10 +46,9 @@ export class OrdersPage implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     console.log('ngOnInit');
-    // if (GAccount.IsLoggedIn() && this.isSignupConfirm() && this.isPageDestroyed) {
+    // if (GAccount.IsLoggedIn() && this.isSignupConfirm()) {
 
-    //   this.getLocation();
-    //   this.watchPosition();
+    //   this.getCurrentLocation();
     // }
   }
 
@@ -65,7 +64,7 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     setTimeout(() => {
       if (GAccount.IsLoggedIn() && this.isSignupConfirm()) {
-        this.GetOrderByDistance();
+        this.getCurrentLocation();
       }
       event.target.complete();
     }, 500);
@@ -150,7 +149,11 @@ export class OrdersPage implements OnInit, OnDestroy {
     if (GAccount.IsLoggedIn() && this.isSignupConfirm()) {
 
       setTimeout(() => {
+
         this.getLocation();
+      }, 250);
+      setTimeout(() => {
+
         this.watchPosition();
       }, 500);
     }
@@ -169,14 +172,27 @@ export class OrdersPage implements OnInit, OnDestroy {
     console.log('ngOnDestroy');
     this.clearWatch();
     clearInterval(this.interval);
+
+  }
+
+  async getCurrentLocation() {
+    const position = await Geolocation.getCurrentPosition();
+    console.log(position.coords);
+    try {
+      this.delivererPosition.lat = +position.coords.latitude;
+      this.delivererPosition.lng = +position.coords.longitude;
+      this.GetOrderByDistance();
+    } catch {
+      console.log('GeoLocation Failed');
+    }
   }
 
   async getLocation() {
     const position = await Geolocation.getCurrentPosition();
     console.log(position.coords);
     try {
-      this.delivererPosition.lat = position.coords.latitude;
-      this.delivererPosition.lng = position.coords.longitude;
+      this.delivererPosition.lat = +position.coords.latitude;
+      this.delivererPosition.lng = +position.coords.longitude;
       this.GetOrderByDistance();
       this.interval = setInterval(() => {
         if (!this.selectedMode) {
@@ -193,8 +209,8 @@ export class OrdersPage implements OnInit, OnDestroy {
 
       if (err === undefined) {
         console.log(position);
-        this.delivererPosition.lat = position.coords.latitude;
-        this.delivererPosition.lng = position.coords.longitude;
+        this.delivererPosition.lat = +position.coords.latitude;
+        this.delivererPosition.lng = +position.coords.longitude;
       } else {
         console.log(err);
       }
@@ -237,6 +253,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                 if (myProduct.quantity < orderProduct.quantity) {
                   SharedIonic.toast(this.toastController, myProduct.name + ' quantity is not enough');
                   found = true;
+                  SharedIonic.dismissLoading(this.loadingController);
                   return;
                 }
               }
@@ -414,6 +431,7 @@ export class OrdersPage implements OnInit, OnDestroy {
               if (myProduct.quantity < orderProduct.quantity) {
                 SharedIonic.toast(this.toastController, myProduct.name + ' quantity is not enough');
                 found = true;
+                SharedIonic.dismissLoading(this.loadingController);
                 return;
               }
             }
@@ -428,6 +446,14 @@ export class OrdersPage implements OnInit, OnDestroy {
               GAccount.DelivererTakeOrderState = true;
               GAccount.OrderId = this.selectedOrder.orderId;
               GAccount.OrderDeliver = this.selectedOrder;
+              for (let index = 0; index < localStorage.length; index++) {
+
+                if (localStorage.key(index) === 'isDelivererTakeOrderState') {
+                  localStorage.removeItem('isDelivererTakeOrderState');
+                } else if (localStorage.key(index) === 'orderId') {
+                  localStorage.removeItem('orderId');
+                }
+              }
               localStorage.setItem('isDelivererTakeOrderState', '1');
               localStorage.setItem('orderId', this.selectedOrder.orderId);
               SharedIonic.toast(this.toastController, 'Order Taked');
@@ -440,6 +466,14 @@ export class OrdersPage implements OnInit, OnDestroy {
                 GAccount.DelivererTakeOrderState = true;
                 GAccount.OrderId = this.selectedOrder.orderId;
                 GAccount.OrderDeliver = this.selectedOrder;
+                for (let index = 0; index < localStorage.length; index++) {
+
+                  if (localStorage.key(index) === 'isDelivererTakeOrderState') {
+                    localStorage.removeItem('isDelivererTakeOrderState');
+                  } else if (localStorage.key(index) === 'orderId') {
+                    localStorage.removeItem('orderId');
+                  }
+                }
                 localStorage.setItem('isDelivererTakeOrderState', '1');
                 localStorage.setItem('orderId', this.selectedOrder.orderId);
                 SharedIonic.toast(this.toastController, 'Order Taked');

@@ -1,9 +1,10 @@
 export class Urls {
   public static ReturnUrl = '/';
 
-  public static HomeUrl = '/home';
+  public static HomeUrl = '/';
   public static OrdersUrl = '/tabs/orders';
   public static UpdateStockUrl = '/tabs/update';
+  public static TurnoverUrl = '/tabs/Turnover';
   public static AboutUrl = '/about';
   public static Page404Url = '/page404';
   public static Page500Url = '/page500';
@@ -15,9 +16,10 @@ export class Urls {
   public static SignupConfirmUrl = '/SignupConfirm';
 }
 
-export const HomeUrl = '/home';
+export const HomeUrl = '/';
 export const OrdersUrl = '/tabs/orders';
 export const UpdateStockUrl = '/tabs/update';
+export const TurnoverUrl = '/tabs/Turnover';
 export const AboutUrl = '/about';
 export const Page404Url = '/page404';
 export const Page500Url = '/page500';

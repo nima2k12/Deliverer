@@ -80,7 +80,7 @@ export class DelivererService {
       .post<IOrderDetails[]>(this.getOrderByIdUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
   }
 
-  SetDone(model: string): Observable<IOrderDetails[]> {
+  SetDone(model: string) {
 
     const body = new HttpParams()
       .set('id', model);
@@ -89,7 +89,7 @@ export class DelivererService {
 
     return this.http
       // tslint:disable-next-line: max-line-length
-      .post<IOrderDetails[]>(this.setDoneUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
+      .post(this.setDoneUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
   }
 
   GetCustomerById(model: number): Observable<ICustomerModel> {

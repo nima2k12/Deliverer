@@ -21,6 +21,8 @@ export class StockService {
   private getStockbyDelivererIdUrl = 'https://scandent-realignmen.000webhostapp.com/getStockbyDelivererId.php';
   // private vivapaymentsUrl = 'https://demo-accounts.vivapayments.com/connect/token';
   private vivapaymentsUrl = 'https://scandent-realignmen.000webhostapp.com/getToken.php';
+  private setDoneUrl = 'https://scandent-realignmen.000webhostapp.com/setDone.php';
+  private getTurnoverBydelivererIdUrl = 'https://scandent-realignmen.000webhostapp.com/getTurnoverBydelivererId.php';
   private vivapaymentchargetokensUrl = 'https://demo-api.vivapayments.com/nativecheckout/v2/chargetokens';
 
   constructor(private http: HttpClient) { }
@@ -39,6 +41,18 @@ export class StockService {
       .post(this.updateStockUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
   }
 
+  SetDone(model: string) {
+
+    const body = new HttpParams()
+      .set('id', model);
+
+    console.log(body);
+
+    return this.http
+      // tslint:disable-next-line: max-line-length
+      .post(this.setDoneUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
+  }
+
   GetProducts(): Observable<IProductDetailModel[]> {
 
     return this.http
@@ -52,6 +66,17 @@ export class StockService {
 
     return this.http
       .post<IDelivererStockModel[]>(this.getStockbyDelivererIdUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
+  }
+
+
+  GetTurnoverBydelivererId(model: string): Observable<string> {
+
+    const body = new HttpParams()
+      .set('id', model);
+
+    return this.http
+      // tslint:disable-next-line: max-line-length
+      .post<string>(this.getTurnoverBydelivererIdUrl, body, { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
   }
 
   Transaction(model: ITransactionModel) {

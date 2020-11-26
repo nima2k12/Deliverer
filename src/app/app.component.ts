@@ -37,6 +37,11 @@ export class AppComponent implements OnInit {
       icon: 'refresh-outline'
     },
     {
+      title: 'Turnover',
+      url: Urls.TurnoverUrl,
+      icon: 'cash-outline'
+    },
+    {
       title: 'SignUp',
       url: Urls.AccountUrl,
       icon: 'log-in-outline'

@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../update-stock/update.module').then(m => m.UpdatePageModule)
       },
       {
+        path: 'Turnover',
+        loadChildren: () => import('../turnover/turnover.module').then(m => m.TurnoverModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/orders',
         pathMatch: 'full'

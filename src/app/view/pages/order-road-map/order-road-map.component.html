@@ -3,12 +3,23 @@
     <ion-buttons slot="start">
       <ion-menu-button color="primary"></ion-menu-button>
     </ion-buttons>
-    <ion-title color="primary">Road Map</ion-title>
+    <ion-title color="primary"
+      >Auto Render <ion-checkbox [(ngModel)]="isAutoRoadTrack"></ion-checkbox
+    ></ion-title>
+
     <ion-buttons slot="end">
-      <ion-button color="primary" expand="block" shape="round" (click)="presentAlert()"
+      <ion-button
+        color="primary"
+        expand="block"
+        shape="round"
+        (click)="presentAlert()"
         >Delivered</ion-button
       >
-      <ion-icon color="primary" slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+      <ion-icon
+        color="primary"
+        slot="icon-only"
+        name="checkmark-circle-outline"
+      ></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
