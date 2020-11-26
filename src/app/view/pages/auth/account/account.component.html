@@ -1,0 +1,111 @@
+<ion-content>
+  <div class="signup-logo">
+    <img src="assets/img/logo.jpeg" alt="Logo" />
+    <h1>
+      <ion-text color="primary">Register</ion-text>
+    </h1>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+        <form role="form" [formGroup]="form">
+          <div *ngIf="isRegisterd" style="text-align: center">
+            <ion-text color="danger">You are Registered Before</ion-text>
+          </div>
+
+          <ion-item color="darkest">
+            <ion-label color="primary" position="floating">Nom:</ion-label>
+            <ion-input
+              color="primary"
+              placeholder="nom"
+              type="text"
+              formControlName="nom"
+            ></ion-input>
+          </ion-item>
+          <ion-item color="darkest">
+            <ion-label color="primary" position="floating">address:</ion-label>
+            <ion-textarea
+              color="primary"
+              placeholder="address"
+              type="text"
+              formControlName="address"
+            ></ion-textarea>
+          </ion-item>
+          <ion-item color="darkest">
+            <ion-label color="primary" position="floating"
+              >Birth Date:</ion-label
+            >
+            <ion-datetime
+              style="color: #77ab7e"
+              min="1930-02"
+              max="2020"
+              displayFormat="DDD. MMM DD, YYYY"
+              formControlName="birth"
+              monthShortNames="jan, feb, mar, apr, mai, jun, jul, aug, sep, okt, nov, des"
+            ></ion-datetime>
+          </ion-item>
+
+          <ion-item color="darkest">
+            <ion-label color="primary" position="floating">Phone:</ion-label>
+            <ion-input
+              color="primary"
+              placeholder="phone"
+              type="text"
+              formControlName="phone"
+            ></ion-input>
+          </ion-item>
+          <ion-item color="darkest">
+            <ion-label color="primary" position="floating">Email:</ion-label>
+            <ion-input
+              color="primary"
+              placeholder="email"
+              type="email"
+              formControlName="mail"
+            ></ion-input>
+          </ion-item>
+          <!-- <div class="ion-padding ion-margin-top" style="margin-top: 60px">
+            <ion-button
+              [disabled]="!form.valid"
+              (click)="Signup()"
+              expand="block"
+              color="primary"
+              shape="round"
+            >
+              Create account
+            </ion-button>
+            <ion-button
+              class="ion-margin-top"
+              (click)="onCancel()"
+              expand="block"
+              shape="round"
+              color="light"
+            >
+              Cancel
+            </ion-button>
+          </div> -->
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer class="ion-padding" *ngIf="isKeyboardHide" style="background-color: #121212;">
+  <ion-button
+    [disabled]="!form.valid"
+    (click)="Signup()"
+    expand="block"
+    color="primary"
+    shape="round"
+  >
+    Create account
+  </ion-button>
+  <ion-button
+    class="ion-margin-top"
+    (click)="onCancel()"
+    expand="block"
+    shape="round"
+    color="light"
+  >
+    Cancel
+  </ion-button>
+</ion-footer>

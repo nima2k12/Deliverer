@@ -1,0 +1,13 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="danger" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <div *ngIf="isRedirectToACSForm">
+    <iframe [outerHTML]="redirectToACSForm"> </iframe>
+  </div>
+</ion-content>

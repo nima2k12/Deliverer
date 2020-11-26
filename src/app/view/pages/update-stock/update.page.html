@@ -1,0 +1,53 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary">Update Stock</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row color="primary" justify-content-center>
+      <ion-col
+        align-self-center
+        size="12"
+        size-lg="10"
+        offset-lg="1"
+        size-xl="8"
+        offset-xl="2"
+      >
+        <h2 style="text-align: center" *ngIf="!isLoggedIn()">
+          <ion-text color="danger">Please SignUp</ion-text>
+        </h2>
+        <h2
+          style="text-align: center"
+          *ngIf="isLoggedIn() && !isSignupConfirm()"
+        >
+          <ion-text color="danger">Please Wait to Confirm your signup</ion-text>
+        </h2>
+        <ion-list *ngIf="isLoggedIn() && isSignupConfirm() && products">
+          <ion-item *ngFor="let product of products">
+            <ion-thumbnail slot="start">
+              <img [src]="product.img" />
+            </ion-thumbnail>
+            <ion-label color="primary">
+              <h3>{{product.name}}</h3>
+              <!-- <p>{{order.description}}</p> -->
+              <p>Quantity: {{product.quantity}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer class="ion-padding" style="background-color: #121212">
+  <ion-button expand="block" color="primary" shape="round" (click)="onPay()"
+    >Pay</ion-button
+  >
+</ion-footer>

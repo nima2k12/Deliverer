@@ -1,0 +1,13 @@
+{
+  "appId": "com.Domain",
+  "appName": "Deliverer CBD",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1000
+    }
+  },
+  "cordova": {}
+}

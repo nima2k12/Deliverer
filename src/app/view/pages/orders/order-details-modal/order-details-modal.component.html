@@ -1,0 +1,35 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="danger" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row color="primary" justify-content-center>
+      <ion-col
+        align-self-center
+        size="12"
+        size-lg="10"
+        offset-lg="1"
+        size-xl="8"
+        offset-xl="2"
+      >
+        <ion-card>
+          <ion-img [src]="order.img"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle
+              >Quantity: {{ order.quantity }}</ion-card-subtitle
+            >
+            <ion-card-title>{{ order.name }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-text> {{ order.description }} </ion-text>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

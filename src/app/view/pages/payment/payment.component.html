@@ -1,0 +1,94 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="primary">Payer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <form class="ion-padding" role="form" [formGroup]="form">
+    <ion-item color="light">
+      <ion-label position="floating">Numero de carte:</ion-label>
+      <ion-input
+        color="dark"
+        placeholder="16 digit"
+        type="text"
+        formControlName="number"
+      ></ion-input>
+    </ion-item>
+    <ion-item color="light">
+      <ion-label position="floating">CVV:</ion-label>
+      <ion-input
+        color="dark"
+        placeholder="3 digit"
+        type="text"
+        formControlName="cvc"
+      ></ion-input>
+    </ion-item>
+    <ion-item color="light">
+      <ion-label color="dark" position="floating"
+        >Date`d expiration:</ion-label
+      >
+      <ion-datetime
+        min="2000"
+        max="2100"
+        displayFormat="MM, YYYY"
+        formControlName="date"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item color="light">
+      <ion-label position="floating">Nom:</ion-label>
+      <ion-input
+        color="dark"
+        placeholder="Nom"
+        type="text"
+        formControlName="nom"
+      ></ion-input>
+    </ion-item>
+    <!-- <ion-item color="darkest">
+      <ion-label color="primary" position="floating">expirationYear:</ion-label>
+      <ion-input
+        color="primary"
+        placeholder="expirationYear"
+        type="number"
+        formControlName="expirationYear"
+      ></ion-input>
+    </ion-item>
+    <ion-item color="darkest">
+      <ion-label color="primary" position="floating"
+        >expirationMonth:</ion-label
+      >
+      <ion-input
+        color="primary"
+        placeholder="expirationMonth"
+        type="number"
+        formControlName="expirationMonth"
+      ></ion-input>
+    </ion-item> -->
+    <!-- <div class="ion-padding ion-margin-top" style="margin-top: 60px">
+      
+      <ion-button
+        class="ion-margin-top"
+        (click)="onCancel()"
+        expand="block"
+        shape="round"
+        color="light"
+      >
+        Cancel
+      </ion-button>
+    </div> -->
+  </form>
+</ion-content>
+<ion-footer class="ion-padding" *ngIf="isKeyboardHide" style="background-color: #f4f5f8;">
+  <ion-button
+  [disabled]="!form.valid"
+  (click)="GetPayAccessToken()"
+  expand="block"
+  color="primary"
+  shape="round"
+>
+  Pay
+</ion-button>
+</ion-footer>

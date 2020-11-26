@@ -1,0 +1,109 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary">Panel</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true">
+  <ion-segment (ionChange)="segmentChanged($event)" value="1">
+    <ion-segment-button value="1">
+      <ion-label>ID</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2">
+      <ion-label>Rib</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        align-self-center
+        size="12"
+        size-lg="10"
+        offset-lg="1"
+        size-xl="8"
+        offset-xl="2"
+      >
+        <!-- <ion-button
+    class="ion-margin-top"
+    type="button"
+    expand="block"
+    (click)="takePicture()"
+    shape="round"
+  >
+    Take Or Import Picture
+  </ion-button> -->
+        <ion-card *ngIf="selected == '1'">
+          <ion-card-header>
+            <ion-card-title color="primary" style="text-align: center"
+              >Image of ID</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="10" offset="1">
+                <ion-img
+                  *ngIf="imageShow != ''"
+                  class="ion-padding"
+                  [src]="imageShow"
+                  style="width: 100%"
+                ></ion-img>
+                <ion-button
+                  class="ion-margin-top"
+                  type="button"
+                  expand="block"
+                  (click)="sendImage()"
+                  [disabled]="imageShow == ''"
+                  shape="round"
+                >
+                  Send
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="selected == '2'">
+          <ion-card-header>
+            <ion-card-title color="primary" style="text-align: center"
+              >Image of Rib</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="10" offset="1">
+                <ion-img
+                  *ngIf="imageRibShow != ''"
+                  class="ion-padding"
+                  [src]="imageRibShow"
+                  style="width: 100%"
+                ></ion-img>
+                <ion-button
+                  class="ion-margin-top"
+                  type="button"
+                  expand="block"
+                  (click)="sendImageRib()"
+                  [disabled]="imageRibShow == ''"
+                  shape="round"
+                >
+                  Send
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab *ngIf="selected == '1'" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="takePicture()" color="primary">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab *ngIf="selected == '2'" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="takePictureRib()" color="primary">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

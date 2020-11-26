@@ -1,0 +1,106 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary">Orders</ion-title>
+    <ion-buttons *ngIf="selectedMode" slot="end">
+      <ion-button (click)="onBack()">
+        <ion-icon color="primary" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row color="primary" justify-content-center>
+      <ion-col
+        align-self-center
+        size="12"
+        size-lg="10"
+        offset-lg="1"
+        size-xl="8"
+        offset-xl="2"
+      >
+        <h2 style="text-align: center">
+          <ion-text color="danger" *ngIf="!isLoggedIn()"
+            >Please SignUp</ion-text
+          >
+        </h2>
+        <h2 style="text-align: center">
+          <ion-text color="danger" *ngIf="isLoggedIn() && !isSignupConfirm()"
+            >Please Wait to Confirm your signup</ion-text
+          >
+        </h2>
+        <div *ngIf="isLoggedIn() && isSignupConfirm()">
+          <ion-list *ngIf="!selectedMode && sortedOrders">
+            <ion-item
+              button
+              (click)="onOrder(order.orderId)"
+              *ngFor="let order of sortedOrders; let i = index"
+            >
+              <!-- <ion-thumbnail slot="start">
+                <img
+                  src="https://www.insertcart.com/wp-content/uploads/2018/05/thumbnail.jpg"
+                />
+              </ion-thumbnail> -->
+              <ion-label color="primary">
+                <h3>Order {{ i+1 }}</h3>
+                <h4>Distance: {{ order.distance + ' Kms'}}</h4>
+              </ion-label>
+
+              <ion-badge color="primary" slot="end"
+                ><ion-text>{{ 5 | currency:'EUR'}}</ion-text></ion-badge
+              >
+              <!-- <ion-icon name="archive-outline"></ion-icon> -->
+              <ion-icon
+                color="{{ order.paid == 1 ? 'success' : 'danger'}}"
+                name="{{ order.paid == 1 ? 'checkmark-outline' : 'close-outline'}}"
+                slot="end"
+              ></ion-icon>
+            </ion-item>
+          </ion-list>
+          <ion-list *ngIf="selectedMode">
+            <div *ngIf="selectedOrderDetails">
+              <ion-item
+                button
+                (click)="onOrderDetails(i)"
+                *ngFor="let order of selectedOrderDetails; let i = index"
+              >
+                <ion-thumbnail slot="start">
+                  <img [src]="order.img" />
+                </ion-thumbnail>
+                <ion-label color="primary">
+                  <h3>{{order.name}}</h3>
+                  <!-- <p>{{order.description}}</p> -->
+                  <p>Quantity: {{order.quantity}}</p>
+                </ion-label>
+                <!-- <ion-icon name="archive-outline" slot="end"></ion-icon> -->
+              </ion-item>
+            </div>
+            <div class="ion-padding" *ngIf="selectedMode">
+              <ion-button
+                expand="block"
+                color="primary"
+                shape="round"
+                (click)="onTakeOrder()"
+                >Take Order</ion-button
+              >
+              <ion-button
+                expand="block"
+                color="light"
+                shape="round"
+                (click)="onShowMap()"
+                >Show Location</ion-button
+              >
+            </div>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

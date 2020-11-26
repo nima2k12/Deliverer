@@ -1,0 +1,118 @@
+<ion-app [class.dark-theme]="dark">
+  <!-- <ion-split-pane contentId="main-content"> -->
+
+  <ion-menu contentId="main-content">
+    <ion-content>
+      <ion-list lines="none">
+        <ion-list-header>
+          <ion-text color="primary">Pages</ion-text>
+        </ion-list-header>
+        <ion-menu-toggle
+          autoHide="false"
+          *ngFor="let p of appPages; let i = index"
+        >
+          <ion-item
+            [routerLink]="p.url"
+            routerLinkActive="selected"
+            routerDirection="root"
+            [routerLinkActiveOptions]="{ exact: true }"
+            detail="false"
+          >
+            <ion-icon slot="start" [name]="p.icon"></ion-icon>
+            <ion-label>
+              {{ p.title }}
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <!-- <ion-list *ngIf="!IsLoggedin()" lines="none">
+        <ion-list-header>
+          <ion-text color="primary">Tools</ion-text>
+        </ion-list-header> -->
+
+        <!-- <ion-menu-toggle autoHide="false">
+          <ion-item
+            button
+            routerLink="/account"
+            routerLinkActive="selected"
+            routerDirection="root"
+            detail="false"
+          >
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-label> SignUp </ion-label>
+          </ion-item>
+        </ion-menu-toggle> -->
+
+        <!-- <ion-menu-toggle autoHide="false">
+          <ion-item>
+            <ion-icon slot="start" name="moon-outline"></ion-icon>
+            <ion-label> Dark Mode </ion-label>
+            <ion-toggle
+              (ngModelChange)="ThemeChanged()"
+              [(ngModel)]="dark"
+            ></ion-toggle>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list> -->
+
+      <ion-list *ngIf="IsLoggedin()" lines="none">
+        <ion-list-header>
+          <ion-text color="primary">Tools</ion-text>
+        </ion-list-header>
+
+        <ion-menu-toggle autoHide="false" *ngIf="IsDelivererTakeOrderState() && isSignupConfirm()">
+          <ion-item
+            button
+            routerLink="/OrderRoadMap"
+            routerLinkActive="selected"
+            routerDirection="root"
+            detail="false"
+          >
+            <ion-icon slot="start" name="locate-outline"></ion-icon>
+            <ion-label> Order Road Map </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
+          <ion-item
+            routerLink="/panel/delivererPanel"
+            routerLinkActive="selected"
+            routerDirection="root"
+            detail="false"
+          >
+            <ion-icon slot="start" name="person-outline"></ion-icon>
+            <ion-label> Deliverer Panel </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
+          <ion-item
+            routerLink="/SignupConfirm"
+            routerLinkActive="selected"
+            routerDirection="root"
+            detail="false"
+          >
+            <ion-icon slot="start" name="key-outline"></ion-icon>
+            <ion-label> Signup Confirm </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- <ion-menu-toggle autoHide="false">
+          <ion-item>
+            <ion-icon slot="start" name="moon-outline"></ion-icon>
+            <ion-label> Dark Mode </ion-label>
+            <ion-toggle
+              (ngModelChange)="ThemeChanged()"
+              [(ngModel)]="dark"
+            ></ion-toggle>
+          </ion-item>
+        </ion-menu-toggle> -->
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  <!-- </ion-split-pane> -->
+</ion-app>

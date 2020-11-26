@@ -1,0 +1,25 @@
+<form role="form" [formGroup]="form" (ngSubmit)="Login()">
+  <ion-item>
+    <ion-input
+      placeholder="Email"
+      type="email"
+      formControlName="email"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input
+      placeholder="Password"
+      type="password"
+      formControlName="password"
+    ></ion-input>
+  </ion-item>
+  <ion-button class="ion-padding"
+    [disabled]="!form.valid"
+    type="submit"
+    expand="block"
+    
+    shape="round"
+    size="large"
+    >Sign in</ion-button
+  >
+</form>
