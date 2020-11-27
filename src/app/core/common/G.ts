@@ -1,7 +1,9 @@
+import { IDeliveredProductModel } from '../../data/model/deliverer/DeliveredProductModel';
 
 export class G {
 
-    public static darkTheme = false;
+    public static darkTheme = true;
+    public static deliveredProducts: IDeliveredProductModel[] = [];
 
     public static getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
         const R = 6371; // Radius of the earth in km

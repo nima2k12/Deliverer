@@ -79,14 +79,10 @@ export class PaymentComponent implements OnInit {
 
       this.stockService.VivaPayments().subscribe(
         res => {
-          console.log('res');
-          console.log(res);
           this.accessToken = res.access_token;
           this.Pay();
         },
         err => {
-          console.log('err');
-          console.log(err);
           SharedIonic.toast(this.toastController, 'Failed');
           SharedIonic.dismissLoading(this.loadingController);
         }
@@ -108,8 +104,6 @@ export class PaymentComponent implements OnInit {
       ), this.accessToken
     ).subscribe(
       res => {
-        console.log('res');
-        console.log(res);
         this.isRedirectToACSForm = false;
         this.chargeToken = res.chargeToken;
         if (res.redirectToACSForm != null) {
@@ -120,8 +114,6 @@ export class PaymentComponent implements OnInit {
         this.PayResponseToAPI();
       },
       err => {
-        console.log('err');
-        console.log(err);
         SharedIonic.toast(this.toastController, 'Failed');
         SharedIonic.dismissLoading(this.loadingController);
       }
@@ -153,14 +145,10 @@ export class PaymentComponent implements OnInit {
       )
     ).subscribe(
       res => {
-        console.log('res');
-        console.log(res);
         SharedIonic.toast(this.toastController, 'Success');
         SharedIonic.dismissLoading(this.loadingController);
       },
       err => {
-        console.log('err');
-        console.log(err);
         SharedIonic.toast(this.toastController, 'Failed');
         SharedIonic.dismissLoading(this.loadingController);
       }

@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Geolocation } from '@capacitor/core';
 import { GeoOrderModel, IGeoOrderModel } from '../../../data/model/deliverer/GeoOrderModel';
 import { DelivererService } from '../../../data/service/deliverer/deliverer.service';
 import { DelivererPositionModel } from '../../../data/model/deliverer/DelivererPositionModel';
 import { GAccount } from '../../../core/common/GAccount';
-import { TakeOrderModel } from '../../../data/model/deliverer/TakeOrderModel';
 import { SharedIonic } from '../../../core/common/SharedIonic';
 import { Router } from '@angular/router';
 import { ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { Urls } from 'src/app/core/common/Urls';
 import { G } from '../../../core/common/G';
+import { Plugins } from '@capacitor/core';
+const { Geolocation } = Plugins;
 
 @Component({
   selector: 'app-order-road-map',
@@ -246,6 +246,13 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
             localStorage.removeItem('orderId');
           }
         }
+        // tslint:disable-next-line: prefer-for-of
+        for (let index = 0; index < G.deliveredProducts.length; index++) {
+
+          if (G.deliveredProducts[index].orderId === GAccount.OrderId) {
+            G.deliveredProducts[index].isDelivered = true;
+          }
+        }
         GAccount.DelivererTakeOrderState = false;
         GAccount.OrderId = '0';
         this.router.navigateByUrl(Urls.OrdersUrl);
@@ -262,6 +269,13 @@ export class OrderRoadMapComponent implements OnInit, OnDestroy {
               localStorage.removeItem('isDelivererTakeOrderState');
             } else if (localStorage.key(index) === 'orderId') {
               localStorage.removeItem('orderId');
+            }
+          }
+          // tslint:disable-next-line: prefer-for-of
+          for (let index = 0; index < G.deliveredProducts.length; index++) {
+
+            if (G.deliveredProducts[index].orderId === GAccount.OrderId) {
+              G.deliveredProducts[index].isDelivered = true;
             }
           }
           GAccount.DelivererTakeOrderState = false;

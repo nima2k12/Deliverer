@@ -11,7 +11,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-grid *ngIf="!isLoggedIn()">
+  <ion-grid *ngIf="!isLoggedIn() || !isSignupConfirm()">
     <ion-row color="primary" justify-content-center>
       <ion-col
         align-self-center

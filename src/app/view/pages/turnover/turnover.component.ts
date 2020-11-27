@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { StockService } from '../../../data/service/deliverer/stock.service';
 import { GAccount } from '../../../core/common/GAccount';
+import { SharedIonic } from '../../../core/common/SharedIonic';
 
 @Component({
   selector: 'app-turnover',
@@ -11,7 +12,7 @@ import { GAccount } from '../../../core/common/GAccount';
 })
 export class TurnoverComponent implements OnInit {
 
-  turnover = '100';
+  turnover = '0';
 
   constructor(
     private stockService: StockService,
@@ -40,13 +41,15 @@ export class TurnoverComponent implements OnInit {
 
   getTurnoverBydelivererId() {
 
+    SharedIonic.loading(this.loadingController);
+
     this.stockService.GetTurnoverBydelivererId(GAccount.DelivererId.toString()).subscribe(
       res => {
-        console.log(res);
         this.turnover = res;
+        SharedIonic.dismissLoading(this.loadingController);
       },
       err => {
-        console.log(err);
+        SharedIonic.dismissLoading(this.loadingController);
       }
     );
   }

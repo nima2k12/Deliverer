@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Geolocation } from '@capacitor/core';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { GAccount } from '../../../../core/common/GAccount';
 import { SharedIonic } from '../../../../core/common/SharedIonic';
@@ -10,6 +9,8 @@ import { Urls } from '../../../../core/common/Urls';
 import { RegisterModel } from '../../../../data/model/account/RegisterModel';
 import { AccountService } from '../../../../data/service/auth/account.service';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Plugins } from '@capacitor/core';
+const { Geolocation } = Plugins;
 
 @Component({
   selector: 'app-account',
@@ -38,6 +39,9 @@ export class AccountComponent implements OnInit {
     private keyboard: Keyboard,
     public datepipe: DatePipe) {
 
+      if (GAccount.IsLoggedIn()) {
+        this.router.navigateByUrl(Urls.OrdersUrl);
+      }
   }
 
   ionViewWillEnter() {
@@ -91,7 +95,8 @@ export class AccountComponent implements OnInit {
 
   onCancel() {
 
-    this.router.navigateByUrl(Urls.OrdersUrl);
+    navigator['app'].exitApp();
+    // this.router.navigateByUrl(Urls.OrdersUrl);
   }
 
   Signup() {

@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DelivererService } from './data/service/deliverer/deliverer.service';
 import { AccountInterceptor } from './core/utility/account.interceptor';
+import { AccountService } from './data/service/auth/account.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { AccountInterceptor } from './core/utility/account.interceptor';
       multi: true
     },
     DelivererService,
+    AccountService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

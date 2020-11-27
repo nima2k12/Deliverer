@@ -46,7 +46,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-footer class="ion-padding" style="background-color: #121212">
+<ion-footer *ngIf="isLoggedIn() && isSignupConfirm()" class="ion-padding" style="background-color: #121212">
   <ion-button expand="block" color="primary" shape="round" (click)="onPay()"
     >Pay</ion-button
   >

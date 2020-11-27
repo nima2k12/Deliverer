@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { Urls } from './core/common/Urls';
 import { DelivererService } from './data/service/deliverer/deliverer.service';
 import { GeoOrderModel } from './data/model/deliverer/GeoOrderModel';
+import { AccountService } from './data/service/auth/account.service';
 
 @Component({
   selector: 'app-root',
@@ -19,13 +20,10 @@ import { GeoOrderModel } from './data/model/deliverer/GeoOrderModel';
 export class AppComponent implements OnInit {
 
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
+  isConfirm = false;
+  interval: any;
 
   appPages = [
-    // {
-    //   title: 'Home',
-    //   url: Urls.HomeUrl,
-    //   icon: 'cart-outline'
-    // },
     {
       title: 'Orders',
       url: Urls.OrdersUrl,
@@ -40,12 +38,12 @@ export class AppComponent implements OnInit {
       title: 'Turnover',
       url: Urls.TurnoverUrl,
       icon: 'cash-outline'
-    },
-    {
-      title: 'SignUp',
-      url: Urls.AccountUrl,
-      icon: 'log-in-outline'
     }
+    // {
+    //   title: 'SignUp',
+    //   url: Urls.AccountUrl,
+    //   icon: 'log-in-outline'
+    // }
   ];
 
   lastTimeBackPress = 0;
@@ -59,14 +57,74 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private alertController: AlertController,
     private location: Location,
-    private delivererService: DelivererService
+    private delivererService: DelivererService,
+    private accountService: AccountService,
   ) {
     this.initializeApp();
     this.CheckTheme();
     this.backButtonEvent();
+
+    if (GAccount.IsLoggedIn()) {
+
+      this.interval = setInterval(() => {
+        this.getSignupStatus();
+      }, 3000);
+    }
   }
 
   async ngOnInit() { }
+
+  getSignupStatus() {
+
+    this.accountService.IsRegisteredById(GAccount.DelivererId.toString()).subscribe(
+      res => {
+
+        if (res.toString() === '1') {
+          if (!GAccount.SignupStatus) {
+            this.onConfirm();
+            // clearInterval(this.interval);
+            setTimeout(() => {
+              this.router.navigateByUrl(Urls.SignupConfirmUrl);
+            }, 1000);
+          }
+
+        } else {
+          if (GAccount.SignupStatus) {
+            this.onDisable();
+            setTimeout(() => {
+              this.router.navigateByUrl(Urls.SignupConfirmUrl);
+            }, 1000);
+          }
+        }
+      },
+      err => {
+      }
+    );
+  }
+
+  onDisable() {
+    GAccount.SignupStatus = false;
+    this.isConfirm = false;
+    for (let index = 0; index < localStorage.length; index++) {
+      if (localStorage.key(index) === 'signupStatus') {
+        localStorage.removeItem('signupStatus');
+        localStorage.setItem('signupStatus', '0');
+        return;
+      }
+    }
+  }
+
+  onConfirm() {
+    GAccount.SignupStatus = true;
+    this.isConfirm = true;
+    for (let index = 0; index < localStorage.length; index++) {
+      if (localStorage.key(index) === 'signupStatus') {
+        localStorage.removeItem('signupStatus');
+        localStorage.setItem('signupStatus', '1');
+        return;
+      }
+    }
+  }
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -124,7 +182,11 @@ export class AppComponent implements OnInit {
   backButtonEvent() {
     this.platform.backButton.subscribeWithPriority(0, () => {
       this.routerOutlets.forEach(async (outlet: IonRouterOutlet) => {
-        console.log(this.router.url);
+
+        if (!GAccount.IsLoggedIn() && this.router.url === Urls.AccountUrl) {
+          this.presentAlertConfirm();
+          return;
+        }
 
         if (this.router.url !== Urls.OrdersUrl) {
           // await this.router.navigate(['/']);
@@ -177,7 +239,7 @@ export class AppComponent implements OnInit {
     }
 
     if (!found) {
-      this.dark = false;
+      this.dark = true;
     }
 
     G.darkTheme = this.dark;
@@ -199,13 +261,6 @@ export class AppComponent implements OnInit {
 
     G.darkTheme = !this.dark;
   }
-
-  // SignOut(): void {
-  //   if (GAccount.SignOut()) {
-  //     // this.navCtrl.navigateForward('/account');
-  //     this.router.navigateByUrl('/account');
-  //   }
-  // }
 
   IsLoggedin(): boolean {
     return GAccount.IsLoggedIn();

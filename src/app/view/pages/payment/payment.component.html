@@ -15,6 +15,9 @@
         color="dark"
         placeholder="16 digit"
         type="text"
+        pattern="\d*"
+        maxlength="16"
+        minlength="16"
         formControlName="number"
       ></ion-input>
     </ion-item>
@@ -24,13 +27,14 @@
         color="dark"
         placeholder="3 digit"
         type="text"
+        pattern="\d*"
+        maxlength="3"
+        minlength="3"
         formControlName="cvc"
       ></ion-input>
     </ion-item>
     <ion-item color="light">
-      <ion-label color="dark" position="floating"
-        >Date`d expiration:</ion-label
-      >
+      <ion-label color="dark" position="floating">Date`d expiration:</ion-label>
       <ion-datetime
         min="2000"
         max="2100"
@@ -81,14 +85,18 @@
     </div> -->
   </form>
 </ion-content>
-<ion-footer class="ion-padding" *ngIf="isKeyboardHide" style="background-color: #f4f5f8;">
-  <ion-button
-  [disabled]="!form.valid"
-  (click)="GetPayAccessToken()"
-  expand="block"
-  color="primary"
-  shape="round"
+<ion-footer
+  class="ion-padding"
+  *ngIf="isKeyboardHide"
+  style="background-color: #f4f5f8"
 >
-  Pay
-</ion-button>
+  <ion-button
+    [disabled]="!form.valid"
+    (click)="GetPayAccessToken()"
+    expand="block"
+    color="primary"
+    shape="round"
+  >
+    Pay
+  </ion-button>
 </ion-footer>

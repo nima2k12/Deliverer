@@ -44,8 +44,6 @@ export class SignupConfirmComponent implements OnInit {
 
     this.accountService.IsRegisteredById(GAccount.DelivererId.toString()).subscribe(
       res => {
-        console.log('res');
-        console.log(res);
         if (res.toString() === '1') {
           this.onConfirm();
         } else {
@@ -59,8 +57,6 @@ export class SignupConfirmComponent implements OnInit {
         }
       },
       err => {
-        console.log('err');
-        console.log(err);
         SharedIonic.dismissLoading(this.loadingController);
         SharedIonic.toast(this.toastController, 'Failed');
       }

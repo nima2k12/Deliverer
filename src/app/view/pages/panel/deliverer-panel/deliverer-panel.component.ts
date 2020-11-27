@@ -38,14 +38,12 @@ export class DelivererPanelComponent implements OnInit {
       source: CameraSource.Prompt,
       resultType: CameraResultType.Base64
     });
-    console.log(image);
 
     this.imageBase64 = image.base64String;
     this.imageShow = 'data:image/' + image.format + ';base64,' + image.base64String;
   }
 
   segmentChanged(e) {
-    // console.log(e.detail.value);
     this.selected = e.detail.value;
   }
 
@@ -56,7 +54,6 @@ export class DelivererPanelComponent implements OnInit {
       source: CameraSource.Prompt,
       resultType: CameraResultType.Base64
     });
-    console.log(image);
 
     this.imageRibBase64 = image.base64String;
     this.imageRibShow = 'data:image/' + image.format + ';base64,' + image.base64String;
@@ -82,13 +79,10 @@ export class DelivererPanelComponent implements OnInit {
 
       this.delivererService.SaveIdImage(new IdImageModel(GAccount.DelivererId, name, this.imageBase64)).subscribe(
         res => {
-          console.log(res);
-
           SharedIonic.toast(this.toastController, 'Successfully Done');
           SharedIonic.dismissLoading(this.loadingController);
         },
         err => {
-          console.log(err);
           if (err.error.text === 'Photo enregistrée !') {
             SharedIonic.toast(this.toastController, 'Successfully Done');
           } else {
@@ -113,13 +107,10 @@ export class DelivererPanelComponent implements OnInit {
 
       this.delivererService.SaveRibImage(new IdImageModel(GAccount.DelivererId, name, this.imageRibBase64)).subscribe(
         res => {
-          console.log(res);
-
           SharedIonic.toast(this.toastController, 'Successfully Done');
           SharedIonic.dismissLoading(this.loadingController);
         },
         err => {
-          console.log(err);
           if (err.error.text === 'Photo enregistrée !') {
             SharedIonic.toast(this.toastController, 'Successfully Done');
           } else {

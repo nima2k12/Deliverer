@@ -26,12 +26,12 @@
         </ion-menu-toggle>
       </ion-list>
 
-      <!-- <ion-list *ngIf="!IsLoggedin()" lines="none">
+      <ion-list *ngIf="!IsLoggedin()" lines="none">
         <ion-list-header>
-          <ion-text color="primary">Tools</ion-text>
-        </ion-list-header> -->
+          <ion-text color="primary">Account</ion-text>
+        </ion-list-header>
 
-        <!-- <ion-menu-toggle autoHide="false">
+        <ion-menu-toggle autoHide="false">
           <ion-item
             button
             routerLink="/account"
@@ -39,10 +39,10 @@
             routerDirection="root"
             detail="false"
           >
-            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-icon slot="start" name="log-in-outline"></ion-icon>
             <ion-label> SignUp </ion-label>
           </ion-item>
-        </ion-menu-toggle> -->
+        </ion-menu-toggle>
 
         <!-- <ion-menu-toggle autoHide="false">
           <ion-item>
@@ -53,8 +53,8 @@
               [(ngModel)]="dark"
             ></ion-toggle>
           </ion-item>
-        </ion-menu-toggle>
-      </ion-list> -->
+        </ion-menu-toggle> -->
+      </ion-list>
 
       <ion-list *ngIf="IsLoggedin()" lines="none">
         <ion-list-header>
@@ -86,7 +86,7 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <ion-menu-toggle autoHide="false">
+        <ion-menu-toggle autoHide="false" *ngIf="!isSignupConfirm()">
           <ion-item
             routerLink="/SignupConfirm"
             routerLinkActive="selected"
