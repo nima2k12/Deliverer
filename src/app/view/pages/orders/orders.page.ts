@@ -42,7 +42,6 @@ export class OrdersPage implements OnInit, OnDestroy {
     public loadingController: LoadingController,
     public router: Router) {
 
-    console.log('constructor');
   }
 
   ngOnInit(): void {

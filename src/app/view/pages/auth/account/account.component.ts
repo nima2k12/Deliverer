@@ -22,6 +22,8 @@ export class AccountComponent implements OnInit {
 
   isRegisterd = false;
   form: FormGroup;
+  isConfirm = false;
+  interval: any;
 
   latitude = -1;
   longitude = -1;
@@ -39,12 +41,17 @@ export class AccountComponent implements OnInit {
     private keyboard: Keyboard,
     public datepipe: DatePipe) {
 
-      if (GAccount.IsLoggedIn()) {
-        this.router.navigateByUrl(Urls.OrdersUrl);
-      }
+      // if (GAccount.IsLoggedIn()) {
+      //   this.router.navigateByUrl(Urls.OrdersUrl);
+      // }
   }
 
   ionViewWillEnter() {
+
+    if (GAccount.IsLoggedIn()) {
+      this.router.navigateByUrl(Urls.OrdersUrl);
+    }
+
     this.keyboard.onKeyboardWillShow().subscribe(() => {
       this.isKeyboardHide = false;
       console.log('SHOWK');
@@ -99,6 +106,58 @@ export class AccountComponent implements OnInit {
     // this.router.navigateByUrl(Urls.OrdersUrl);
   }
 
+  getSignupStatus() {
+
+    this.accountService.IsRegisteredById(GAccount.DelivererId.toString()).subscribe(
+      res => {
+
+        if (res.toString() === '1') {
+          if (!GAccount.SignupStatus) {
+            this.onConfirm();
+            // clearInterval(this.interval);
+            setTimeout(() => {
+              this.router.navigateByUrl(Urls.SignupConfirmUrl);
+            }, 1000);
+          }
+
+        } else {
+          if (GAccount.SignupStatus) {
+            this.onDisable();
+            setTimeout(() => {
+              this.router.navigateByUrl(Urls.SignupConfirmUrl);
+            }, 1000);
+          }
+        }
+      },
+      err => {
+      }
+    );
+  }
+
+  onDisable() {
+    GAccount.SignupStatus = false;
+    this.isConfirm = false;
+    for (let index = 0; index < localStorage.length; index++) {
+      if (localStorage.key(index) === 'signupStatus') {
+        localStorage.removeItem('signupStatus');
+        localStorage.setItem('signupStatus', '0');
+        return;
+      }
+    }
+  }
+
+  onConfirm() {
+    GAccount.SignupStatus = true;
+    this.isConfirm = true;
+    for (let index = 0; index < localStorage.length; index++) {
+      if (localStorage.key(index) === 'signupStatus') {
+        localStorage.removeItem('signupStatus');
+        localStorage.setItem('signupStatus', '1');
+        return;
+      }
+    }
+  }
+
   Signup() {
 
     if (this.form.valid) {
@@ -149,6 +208,9 @@ export class AccountComponent implements OnInit {
               localStorage.removeItem('birth');
             }
           }
+          this.interval = setInterval(() => {
+            this.getSignupStatus();
+          }, 3000);
           localStorage.setItem('delivererId', this.delivererId);
           localStorage.setItem('nom', this.form.value.nom);
           localStorage.setItem('mail', this.form.value.mail);
